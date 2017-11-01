@@ -61,7 +61,7 @@ class testAddGroup1(unittest.TestCase):
         self.openHomePage(wd)
         self.login(wd, username="admin", password="secret")
         self.openGroupPage(wd)
-        self.createGroup(wd, name="test1", header="test2", footer="test3")
+        self.createGroup(wd, name="test1", header="test2", footer="test4")
         self.backToGroupPage(wd)
         self.logout(wd)
 
