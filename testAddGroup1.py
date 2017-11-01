@@ -20,31 +20,31 @@ class testAddGroup1(unittest.TestCase):
         wd.get("http://macbook-pro-123.local/addressbook/index.php")
 
 
-    def login(self, wd, username, password):
+    def login(self, wd):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
+        wd.find_element_by_name("user").send_keys("admin")
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
+        wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
     def openGroupPage(self, wd):
         wd.find_element_by_link_text("groups").click()
 
-    def createGroup(self, wd, name, header, footer):
+    def createGroup(self, wd):
         # add new group
         wd.find_element_by_name("new").click()
         # fill group form
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(name)
+        wd.find_element_by_name("group_name").send_keys("test1")
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(header)
+        wd.find_element_by_name("group_header").send_keys("test2")
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(footer)
+        wd.find_element_by_name("group_footer").send_keys("test3")
         # submit created group
         wd.find_element_by_name("submit").click()
 
@@ -59,9 +59,9 @@ class testAddGroup1(unittest.TestCase):
         success = True
         wd = self.wd
         self.openHomePage(wd)
-        self.login(wd, username="admin", password="secret")
+        self.login(wd)
         self.openGroupPage(wd)
-        self.createGroup(wd, name="test1", header="test2", footer="test4")
+        self.createGroup(wd)
         self.backToGroupPage(wd)
         self.logout(wd)
 
