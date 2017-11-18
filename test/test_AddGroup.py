@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from model.group import Group
+
 
 def test_testAddGroup1(ap):
     ap.session.login( username="admin", password="secret")
