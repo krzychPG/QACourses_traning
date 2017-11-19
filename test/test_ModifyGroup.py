@@ -1,7 +1,14 @@
 from model.group import Group
 
 
-def test_modify_firstGroup(ap):
-    ap.session.login( username="admin", password="secret")
-    ap.group.modify_firstGroup(Group(name="test1EDIT", header="test2EDIT", footer="test4EDIT"))
+
+def test_modify_group_name(ap):
+
+    ap.group.modify_firstGroup(Group(name="New group"))
     ap.session.logout()
+
+
+def test_modify_group_header(ap):
+
+    ap.group.modify_firstGroup(Group(name="New header"))
+
