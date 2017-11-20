@@ -6,6 +6,10 @@ class CustomerHelper:
     def __init__(self, ap):
         self.ap = ap
 
+    def open_customer_page(self):
+        wd = self.ap.wd
+        if not wd.current_url.endswith("/addressbook/"):
+            wd.find_element_by_link_text("home").click()
 
     def create(self, customer):
         wd = self.ap.wd
@@ -43,7 +47,6 @@ class CustomerHelper:
         wd.switch_to_alert().accept()
 
 
-
     def modify_firstCustomer(self, newContactData):
         wd = self.ap.wd
         #edit first contact
@@ -51,6 +54,13 @@ class CustomerHelper:
         self.fill_contact_form(newContactData)
         #update changes
         wd.find_element_by_name("update").click()
+
+    def count(self):
+        wd = self.ap.wd
+        self.open_customer_page()
+        return len(wd.find_elements_by_name("selected[]"))
+
+
 
 
 
