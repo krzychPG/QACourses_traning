@@ -17,7 +17,7 @@ class Application:
             self.wd.current_url
             return True
         except:
-            return FileExistsError
+            return False
 
 
     # def openHomePage(self):
