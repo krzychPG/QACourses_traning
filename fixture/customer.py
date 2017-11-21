@@ -8,6 +8,7 @@ class CustomerHelper:
 
     def open_customer_page(self):
         wd = self.ap.wd
+
         if not wd.current_url.endswith("/addressbook/"):
             wd.find_element_by_link_text("home").click()
 

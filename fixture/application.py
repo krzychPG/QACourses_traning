@@ -7,7 +7,7 @@ class Application:
 
     def __init__(self):
         self.wd = WebDriver()
-        self.wd.implicitly_wait(5)
+        #self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.customer = CustomerHelper(self)
@@ -22,7 +22,8 @@ class Application:
 
     # def openHomePage(self):
     #     wd = self.wd
-    #     wd.get("http://macbook-pro-123.local/addressbook/index.php")
+    #     if not (wd.current_url.endswith("/adressbook/") and len(wd.find_elements_by_name()) > 0):
+    #         wd.get("http://macbook-pro-123.local/addressbook/index.php")
 
 
     # def openGroupPage(self):
