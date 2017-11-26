@@ -1,4 +1,4 @@
-
+from model.customer import Customer
 
 
 class CustomerHelper:
@@ -8,7 +8,6 @@ class CustomerHelper:
 
     def open_customer_page(self):
         wd = self.ap.wd
-
         if not wd.current_url.endswith("/addressbook/"):
             wd.find_element_by_link_text("home").click()
 
@@ -60,6 +59,18 @@ class CustomerHelper:
         wd = self.ap.wd
         self.open_customer_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_customer_list(self):
+        wd = self.ap.wd
+        self.open_customer_page()
+        customers = []
+        for element in wd.find_elements_by_css_selector("tr[name = 'entry']"):
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            cells = wd.find_elements_by_tag_name("td")
+            lastname = element.find_elements_by_css_selector("td")[1].text
+            firstname = element.find_elements_by_css_selector("td")[2].text
+            customers.append(Customer(id = id, firstname = firstname, lastname = lastname))
+        return customers
 
 
 
