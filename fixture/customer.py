@@ -19,6 +19,7 @@ class CustomerHelper:
         self.fill_contact_form(customer)
         # safe contact
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.customer_cache = None
 
     def fill_contact_form(self, customer):
         wd = self.ap.wd
@@ -45,6 +46,7 @@ class CustomerHelper:
         #check delete button
         wd.find_element_by_css_selector("input[value='Delete']").click()
         wd.switch_to_alert().accept()
+        self.customer_cache = None
 
 
     def modify_firstCustomer(self, newContactData):
@@ -54,23 +56,28 @@ class CustomerHelper:
         self.fill_contact_form(newContactData)
         #update changes
         wd.find_element_by_name("update").click()
+        self.customer_cache = None
 
     def count(self):
         wd = self.ap.wd
         self.open_customer_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+
+    customer_cache = None
+
     def get_customer_list(self):
-        wd = self.ap.wd
-        self.open_customer_page()
-        customers = []
-        for element in wd.find_elements_by_css_selector("tr[name = 'entry']"):
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            cells = wd.find_elements_by_tag_name("td")
-            lastname = element.find_elements_by_css_selector("td")[1].text
-            firstname = element.find_elements_by_css_selector("td")[2].text
-            customers.append(Customer(id = id, firstname = firstname, lastname = lastname))
-        return customers
+        if self.customer_cache is None:
+            wd = self.ap.wd
+            self.open_customer_page()
+            self.customer_cache = []
+            for element in wd.find_elements_by_css_selector("tr[name = 'entry']"):
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                cells = wd.find_elements_by_tag_name("td")
+                lastname = element.find_elements_by_css_selector("td")[1].text
+                firstname = element.find_elements_by_css_selector("td")[2].text
+                self.customer_cache.append(Customer(id=id, firstname=firstname, lastname=lastname))
+        return list(self.customer_cache)
 
 
 

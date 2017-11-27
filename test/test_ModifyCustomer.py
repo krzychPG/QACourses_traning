@@ -7,7 +7,7 @@ def test_modify_firstCustomer(ap):
     old_customers = ap.customer.get_customer_list()
     customer = Customer(firstname="nameEDIT", lastname="lastnameEDIT", address="testEDIT 12", email="testEDIT@xyz.com", phone="12345983")
     ap.customer.modify_firstCustomer(customer)
+    assert len(old_customers) == ap.customer.count()
     new_customers = ap.customer.get_customer_list()
-    assert len(old_customers)  == len(new_customers)
     old_customers[0] = customer
     assert sorted(old_customers, key=Customer.id_or_max) == sorted(new_customers, key=Customer.id_or_max)
