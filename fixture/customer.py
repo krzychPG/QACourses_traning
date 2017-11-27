@@ -39,20 +39,29 @@ class CustomerHelper:
         wd.find_element_by_name("home").clear()
         wd.find_element_by_name("home").send_keys(customer.phone)
 
-    def delete_firstCustomer(self):
+    def select_customer_by_index(self, index):
         wd = self.ap.wd
-        #select first customer
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
+
+
+    def delete_firstCustomer(self):
+        self.delete_customer_by_index(0)
+
+    def delete_customer_by_index(self, index):
+        wd = self.ap.wd
+        self.select_customer_by_index(index)
         #check delete button
         wd.find_element_by_css_selector("input[value='Delete']").click()
         wd.switch_to_alert().accept()
         self.customer_cache = None
 
+    def modify_firstCustomer(self):
+        self.modify_customer_by_index(0)
 
-    def modify_firstCustomer(self, newContactData):
+    def modify_customer_by_index(self, index, newContactData):
         wd = self.ap.wd
-        #edit first contact
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        #edit some contact
+        wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
         self.fill_contact_form(newContactData)
         #update changes
         wd.find_element_by_name("update").click()

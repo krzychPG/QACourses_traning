@@ -34,23 +34,34 @@ class GroupHelper:
         self.change_field_value("group_header", group.header)
         self.change_field_value("group_footer", group.footer)
 
-
     def delete_firstGroup(self):
+        self.delete_group_by_index(0)
+
+    def select_group_by_index(self, index):
+        wd = self.ap.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+
+    def delete_group_by_index(self, index):
         wd = self.ap.wd
         self.openGroupPage()
         #check first group
-        wd.find_element_by_name("selected[]").click()
+        self.select_group_by_index(index)
         #check delete button
         wd.find_element_by_name("delete").click()
         self.backToGroupPage()
         self.group_cache = None
 
-    def modify_firstGroup(self, new_form_data):
+    def modify_firstGroup(self):
+        self.modify_group_by_index(0)
+
+    def modify_group_by_index(self, index, new_form_data):
         wd = self.ap.wd
         self.openGroupPage()
-        # check first group
-        if not wd.find_element_by_name("selected[]").is_selected():
-            wd.find_element_by_name("selected[]").click()
+        self.select_group_by_index(index)
+        # # check first group
+        # if not wd.find_element_by_name("selected[]").is_selected():
+        #     wd.find_element_by_name("selected[]").click()
         # edit group
         wd.find_element_by_name("edit").click()
         self.fill_group_form(new_form_data)
