@@ -1,4 +1,5 @@
 from model.customer import Customer
+import re
 
 
 class CustomerHelper:
@@ -37,7 +38,17 @@ class CustomerHelper:
         wd.find_element_by_name("email").send_keys(customer.email)
         wd.find_element_by_name("home").click()
         wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(customer.phone)
+        wd.find_element_by_name("home").send_keys(customer.homephone)
+        wd.find_element_by_name("mobile").click()
+        wd.find_element_by_name("mobile").clear()
+        wd.find_element_by_name("mobile").send_keys(customer.mobilephone)
+        wd.find_element_by_name("work").click()
+        wd.find_element_by_name("work").clear()
+        wd.find_element_by_name("work").send_keys(customer.workphone)
+        wd.find_element_by_name("phone2").click()
+        wd.find_element_by_name("phone2").clear()
+        wd.find_element_by_name("phone2").send_keys(customer.secondaryphone)
+
 
     def select_customer_by_index(self, index):
         wd = self.ap.wd
@@ -85,8 +96,62 @@ class CustomerHelper:
                 cells = wd.find_elements_by_tag_name("td")
                 lastname = element.find_elements_by_css_selector("td")[1].text
                 firstname = element.find_elements_by_css_selector("td")[2].text
-                self.customer_cache.append(Customer(id=id, firstname=firstname, lastname=lastname))
+                address = element.find_elements_by_css_selector("td")[3].text
+                email = element.find_elements_by_css_selector("td")[4].text
+                all_phones = cells[5].text
+                self.customer_cache.append(Customer(firstname=firstname, lastname=lastname, address=address,
+                                                    email=email, all_phones_from_home_page=all_phones, id=id))
         return list(self.customer_cache)
+
+
+    def open_customer_to_edit_by_index(self, index):
+        wd = self.ap.wd
+        self.open_customer_page()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name("a").click()
+
+
+    def get_customer_info_from_edit_page(self, index):
+        wd = self.ap.wd
+        self.open_customer_to_edit_by_index(index)
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        homephone = wd.find_element_by_name("home").get_attribute("value")
+        mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
+        workphone = wd.find_element_by_name("work").get_attribute("value")
+        secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        return Customer(firstname=firstname, lastname=lastname, address = address, email=email,
+                        homephone=homephone, mobilephone=mobilephone, workphone=workphone,
+                        secondaryphone=secondaryphone, id=id)
+
+
+    def open_customer_view_by_index(self, index):
+        wd = self.ap.wd
+        self.open_customer_page()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[6]
+        cell.find_element_by_tag_name("a").click()
+
+
+    def get_customer_from_view_page(self, index):
+        wd = self.ap.wd
+        self.open_customer_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        text1 = wd.page_source
+        email = re.search('mailto:(.*)"', text1).group(1)
+        homephone = re.search("H: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return Customer(email=email, homephone=homephone, mobilephone=mobilephone,
+                        workphone=workphone, secondaryphone=secondaryphone)
+
+
+
 
 
 
