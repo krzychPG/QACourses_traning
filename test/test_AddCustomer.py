@@ -1,14 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from model.customer import Customer
+import pytest
+import random
+import string
 
 
+def random_string(prefix, maxlen):
+    symbols = string.ascii_letters + string.digits + string.punctuation + " "*10
+    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
-def test_addNewCustomer(ap):
+testdata2 = [
+    Customer(firstname=firstname, lastname=lastname, address=address)
+    for firstname in ["", random_string("Imie", 10)]
+    for lastname in ["", random_string("Nazwisko", 20)]
+    for address in ["", random_string("address", 10)]
+]
+
+@pytest.mark.parametrize("customer", testdata2, ids=[repr(x) for x in testdata2])
+def test_addNewCustomer(ap, customer):
 
     old_customers = ap.customer.get_customer_list()
-    customer = Customer(firstname="name", lastname="lastname", address="test 12", email="test@xyz.com",
-                        homephone = "12345667", mobilephone="1243224", workphone="1231412", secondaryphone="423423423")
     ap.customer.create(customer)
     assert len(old_customers) + 1 == ap.customer.count()
     new_customers = ap.customer.get_customer_list()
