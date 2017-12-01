@@ -8,7 +8,9 @@ fixture = None
 def ap(request):
     global fixture
     if fixture is None:
-        fixture = Application()
+        browser = request.config.getoption("--browser")
+        baseUrl = request.config.getoption("--baseUrl")
+        fixture = Application(browser="browser", baseUrl="baseUrl")
     else:
         if not fixture.is_valid():
             fixture = Application()
@@ -22,3 +24,7 @@ def stop(request):
         fixture.destr()
     request.addfinalizer(fin)
     return fixture
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--baseUrl", action="store", default="http://localhost/addressbook/index.php")

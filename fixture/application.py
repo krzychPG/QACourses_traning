@@ -1,16 +1,23 @@
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium import webdriver
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.customer import CustomerHelper
 
 class Application:
 
-    def __init__(self):
-        self.wd = WebDriver()
-        self.wd.implicitly_wait(5)
+    def __init__(self, browser, baseUrl):
+        if browser == "firefox":
+            self.wd = webdriver.Firefox()
+        elif browser == "chrome":
+            self.wd = webdriver.Chrome()
+        elif browser == "safari":
+            self.wd = webdriver.Safari()
+        else:
+            raise ValueError("Unrecognized browser %s" % browser)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.customer = CustomerHelper(self)
+        self.baseUrl = baseUrl
 
     def is_valid(self):
         try:
@@ -20,10 +27,10 @@ class Application:
             return False
 
 
-    # def openHomePage(self):
-    #     wd = self.wd
-    #     if not (wd.current_url.endswith("/adressbook/") and len(wd.find_elements_by_name()) > 0):
-    #         wd.get("http://macbook-pro-123.local/addressbook/index.php")
+    def openHomePage(self):
+         wd = self.wd
+         if not (wd.current_url.endswith("/adressbook/") and len(wd.find_elements_by_name()) > 0):
+             wd.get(self.baseUrl)
 
 
     # def openGroupPage(self):
