@@ -9,7 +9,7 @@ class SessionHelper:
 
     def login(self, username, password):
         wd = self.ap.wd
-        wd.get("http://macbook-pro-123.local/addressbook/index.php")
+        wd.get("http://localhost/addressbook/index.php")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
