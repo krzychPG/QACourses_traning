@@ -2,8 +2,8 @@ from model.group import Group
 
 class GroupHelper:
 
-    def __init__(self, ap):
-        self.ap =ap
+    def __init__(self, app):
+        self.ap = app
 
     def openGroupPage(self):
         wd = self.ap.wd

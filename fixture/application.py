@@ -44,5 +44,5 @@ class Application:
 
 
 
-    def destr(self):
+    def destroy(self):
         self.wd.quit()

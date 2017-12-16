@@ -3,8 +3,8 @@
 class SessionHelper:
 
 
-    def __init__(self, ap):
-        self.ap = ap
+    def __init__(self, app):
+        self.ap = app
 
 
     def login(self, username, password):

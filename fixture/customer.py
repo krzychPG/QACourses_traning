@@ -4,8 +4,8 @@ import re
 
 class CustomerHelper:
 
-    def __init__(self, ap):
-        self.ap = ap
+    def __init__(self, app):
+        self.ap = app
 
     def open_customer_page(self):
         wd = self.ap.wd
