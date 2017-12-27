@@ -41,12 +41,25 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_group_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def delete_group_by_index(self, index):
         wd = self.app.wd
         self.openGroupPage()
         #check first group
         self.select_group_by_index(index)
+        #check delete button
+        wd.find_element_by_name("delete").click()
+        self.backToGroupPage()
+        self.group_cache = None
+
+    def delete_group_by_id(self, id):
+        wd = self.app.wd
+        self.openGroupPage()
+        #check first group
+        self.select_group_by_id(id)
         #check delete button
         wd.find_element_by_name("delete").click()
         self.backToGroupPage()
@@ -59,6 +72,21 @@ class GroupHelper:
         wd = self.app.wd
         self.openGroupPage()
         self.select_group_by_index(index)
+        # # check first group
+        # if not wd.find_element_by_name("selected[]").is_selected():
+        #     wd.find_element_by_name("selected[]").click()
+        # edit group
+        wd.find_element_by_name("edit").click()
+        self.fill_group_form(new_form_data)
+        #update changes
+        wd.find_element_by_name("update").click()
+        self.backToGroupPage()
+        self.group_cache = None
+
+    def modify_group_by_id(self, id, new_form_data):
+        wd = self.app.wd
+        self.openGroupPage()
+        self.select_group_by_id(id)
         # # check first group
         # if not wd.find_element_by_name("selected[]").is_selected():
         #     wd.find_element_by_name("selected[]").click()

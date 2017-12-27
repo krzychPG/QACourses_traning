@@ -54,6 +54,9 @@ class CustomerHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_customer_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//*[@id='%s']" % id).click()
 
     def delete_firstCustomer(self):
         self.delete_customer_by_index(0)
@@ -66,14 +69,31 @@ class CustomerHelper:
         wd.switch_to_alert().accept()
         self.customer_cache = None
 
+    def delete_customer_by_id(self, id):
+        wd = self.app.wd
+        self.select_customer_by_id(id)
+        #check delete button
+        wd.find_element_by_css_selector("input[value='Delete']").click()
+        wd.switch_to_alert().accept()
+        self.customer_cache = None
+
     def modify_firstCustomer(self):
         self.modify_customer_by_index(0)
 
-    def modify_customer_by_index(self, index, newContactData):
+    def modify_customer_by_index(self, index, newCustomerData):
         wd = self.app.wd
         #edit some contact
         wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
-        self.fill_contact_form(newContactData)
+        self.fill_contact_form(newCustomerData)
+        #update changes
+        wd.find_element_by_name("update").click()
+        self.customer_cache = None
+
+    def modify_customer_by_id(self, id, newCustomerData):
+        wd = self.app.wd
+        #edit some contact
+        wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr/td[8]/a/img")[id].click()
+        self.fill_contact_form(newCustomerData)
         #update changes
         wd.find_element_by_name("update").click()
         self.customer_cache = None
