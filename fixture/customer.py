@@ -5,15 +5,15 @@ import re
 class CustomerHelper:
 
     def __init__(self, app):
-        self.ap = app
+        self.app = app
 
     def open_customer_page(self):
-        wd = self.ap.wd
+        wd = self.app.wd
         if not wd.current_url.endswith("/addressbook/"):
             wd.find_element_by_link_text("home").click()
 
     def create(self, customer):
-        wd = self.ap.wd
+        wd = self.app.wd
         # click add new contact
         wd.find_element_by_link_text("add new").click()
         # new contact form
@@ -23,7 +23,7 @@ class CustomerHelper:
         self.customer_cache = None
 
     def fill_contact_form(self, customer):
-        wd = self.ap.wd
+        wd = self.app.wd
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(customer.firstname)
@@ -51,7 +51,7 @@ class CustomerHelper:
 
 
     def select_customer_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
 
@@ -59,7 +59,7 @@ class CustomerHelper:
         self.delete_customer_by_index(0)
 
     def delete_customer_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.select_customer_by_index(index)
         #check delete button
         wd.find_element_by_css_selector("input[value='Delete']").click()
@@ -70,7 +70,7 @@ class CustomerHelper:
         self.modify_customer_by_index(0)
 
     def modify_customer_by_index(self, index, newContactData):
-        wd = self.ap.wd
+        wd = self.app.wd
         #edit some contact
         wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
         self.fill_contact_form(newContactData)
@@ -79,7 +79,7 @@ class CustomerHelper:
         self.customer_cache = None
 
     def count(self):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.open_customer_page()
         return len(wd.find_elements_by_name("selected[]"))
 
@@ -88,7 +88,7 @@ class CustomerHelper:
 
     def get_customer_list(self):
         if self.customer_cache is None:
-            wd = self.ap.wd
+            wd = self.app.wd
             self.open_customer_page()
             self.customer_cache = []
             for element in wd.find_elements_by_css_selector("tr[name = 'entry']"):
@@ -105,7 +105,7 @@ class CustomerHelper:
 
 
     def open_customer_to_edit_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.open_customer_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[7]
@@ -113,7 +113,7 @@ class CustomerHelper:
 
 
     def get_customer_info_from_edit_page(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.open_customer_to_edit_by_index(index)
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
@@ -130,7 +130,7 @@ class CustomerHelper:
 
 
     def open_customer_view_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.open_customer_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[6]
@@ -138,7 +138,7 @@ class CustomerHelper:
 
 
     def get_customer_from_view_page(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.open_customer_view_by_index(index)
         text = wd.find_element_by_id("content").text
         text1 = wd.page_source

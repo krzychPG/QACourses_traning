@@ -3,15 +3,15 @@ from model.group import Group
 class GroupHelper:
 
     def __init__(self, app):
-        self.ap = app
+        self.app = app
 
     def openGroupPage(self):
-        wd = self.ap.wd
+        wd = self.app.wd
         if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
             wd.find_element_by_link_text("groups").click()
 
     def create(self, group):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.openGroupPage()
         # add new group
         wd.find_element_by_name("new").click()
@@ -22,14 +22,14 @@ class GroupHelper:
         self.group_cache = None
 
     def change_field_value(self, field_name, text):
-        wd = self.ap.wd
+        wd = self.app.wd
         if text is not None:
             wd.find_element_by_name(field_name).click()
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
     def fill_group_form(self, group):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.change_field_value("group_name", group.name)
         self.change_field_value("group_header", group.header)
         self.change_field_value("group_footer", group.footer)
@@ -38,12 +38,12 @@ class GroupHelper:
         self.delete_group_by_index(0)
 
     def select_group_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
 
     def delete_group_by_index(self, index):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.openGroupPage()
         #check first group
         self.select_group_by_index(index)
@@ -56,7 +56,7 @@ class GroupHelper:
         self.modify_group_by_index(0)
 
     def modify_group_by_index(self, index, new_form_data):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.openGroupPage()
         self.select_group_by_index(index)
         # # check first group
@@ -72,12 +72,12 @@ class GroupHelper:
 
 
     def backToGroupPage(self):
-        wd = self.ap.wd
+        wd = self.app.wd
         wd.find_element_by_link_text("group page").click()
 
 
     def count(self):
-        wd = self.ap.wd
+        wd = self.app.wd
         self.openGroupPage()
         return len(wd.find_elements_by_name("selected[]"))
 
@@ -85,7 +85,7 @@ class GroupHelper:
 
     def get_group_list(self):
         if self.group_cache is None:
-            wd = self.ap.wd
+            wd = self.app.wd
             self.openGroupPage()
             self.group_cache = []
             for element in wd.find_elements_by_css_selector("span.group"):
