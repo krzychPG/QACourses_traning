@@ -2,6 +2,7 @@ import pymysql
 from model.group import Group
 from model.customer import Customer
 
+
 class DbFixture:
 
     def __init__(self, host, name, user, password):
@@ -28,7 +29,7 @@ class DbFixture:
         list = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("select id, firstname, lastname, address from addressbook")
+            cursor.execute("select id, firstname, lastname, address from addressbook WHERE deprecated = '0000-00-00 00:00:00'")
             for row in cursor:
                 (id, firstname, lastname, address) = row
                 list.append(Customer(id=str(id), firstname=firstname, lastname=lastname, address=address))
